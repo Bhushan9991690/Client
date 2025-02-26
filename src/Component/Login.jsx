@@ -1,69 +1,102 @@
+import Text from "./Input/Text";
 import axios from "axios";
+import { BASE_URL } from "../utils/socket";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../utils/Slices/UserSlice";
+import { toggleState } from "../utils/Slices/ToggleSlice";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const data = { email, password };
-  const handleInput = async () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const state = useSelector((store) => {
+    return store.toggle.toggleState;
+  });
+  const [firstName, setfirstName] = useState("Bhushan");
+  const [lastName, setLastName] = useState("kumar");
+  const [phone, setPhone] = useState("7404075251");
+
+  const [email, setEmail] = useState("Bhushan@gmail.com");
+  const [password, setPassword] = useState("Bhushan@t20");
+  const [error, setError] = useState(null);
+  const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", data);
-      console.log(res);
+      const data = { email, password };
+      const res = await axios.post(BASE_URL + "/auth/login", data, {
+        withCredentials: true,
+      });
+      if (res.statusText === "OK" && res.data) {
+        dispatch(addUser(res.data.userData));
+        navigate("/feed");
+        setError(null);
+        alert("login successfully");
+      }
+    } catch (error) {
+      setError(error.response.data.message || "Something went Wrong");
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const data = { email, password, firstName, lastName, phone };
+      const res = await axios.post(BASE_URL + "/auth/signup", data, {
+        withCredentials: true,
+      });
+      if (res.statusText === "OK" && res.data) {
+        dispatch(addUser(res.data.data));
+        setError(null);
+        navigate("/profile");
+        alert("Signup successfully");
+      }
+    } catch (error) {
+      setError(error.response.data.message || "Something went Wrong");
+    }
+  };
+  const handleForm = () => {
+    try {
+      dispatch(toggleState());
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <div className="flex justify-center">
-      <div className="card bg-base-100 w-96 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title mb-2">Login</h2>
-          <label className="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-              <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-            </svg>
-            <input
-              type="text"
-              className="grow"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </label>
-          <label className="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clipRule="evenodd"
+    <div className="flex justify-center my-10 ">
+      <div className="w-96 bg-base-300 py-5 px-4 rounded-lg border">
+        <div className="font-semibold text-xl flex justify-center mr-5">
+          {state ? "Login" : "SignUp"}
+        </div>
+        <div className="flex items-center my-4 flex-col gap-4 ">
+          {!state && (
+            <>
+              <Text
+                text="FirstName"
+                setInput={setfirstName}
+                value={firstName}
               />
-            </svg>
-            <input
-              type="password"
-              className="grow"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-          </label>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary" onClick={handleInput}>
-              Login
-            </button>
+              <Text text="LastName" setInput={setLastName} value={lastName} />
+              <Text text="Phone" setInput={setPhone} value={phone} />
+            </>
+          )}
+          <Text text="Email" setInput={setEmail} value={email} />
+          <Text text="Password" setInput={setPassword} value={password} />
+          <p className="text-red-500">{error}</p>
+        </div>
+        <div className="flex justify-between ml-4 mr-4">
+          <div className="text-yellow-300">
+            {state ? "New user click " : "Already SignUp click "}
+            <span
+              onClick={handleForm}
+              className="underline text-sky-400 cursor-pointer"
+            >
+              {state ? "SignUp" : "Login"}
+            </span>{" "}
           </div>
+          <button
+            onClick={state ? handleLogin : handleSignUp}
+            className="btn btn-primary"
+          >
+            {state ? "Login" : "SignUp"}
+          </button>
         </div>
       </div>
     </div>

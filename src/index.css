@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  * {
+    scrollbar-width: none;
+  }
+  
+  /* Ensure the content remains scrollable */
+  html, body {
+    overflow: auto;
+  }
