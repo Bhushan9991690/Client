@@ -1,1 +1,5 @@
-export const BASE_URL = "/api";
+
+console.log(location,"Location");
+
+export const BASE_URL =
+  location.hostname === "localhost" ? "http://localhost:3000" : "/api";

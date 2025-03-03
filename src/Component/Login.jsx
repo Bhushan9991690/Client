@@ -25,6 +25,7 @@ const Login = () => {
       const res = await axios.post(BASE_URL + "/auth/login", data, {
         withCredentials: true,
       });
+      console.log(res)
       if (res.statusText === "OK" && res.data) {
         dispatch(addUser(res.data.userData));
         navigate("/feed");
@@ -32,7 +33,8 @@ const Login = () => {
         alert("login successfully");
       }
     } catch (error) {
-      setError(error.response.data.message || "Something went Wrong");
+      // setError(error.response.data.message || "Something went Wrong");
+      setError(error?.response?.data?.message || "Something went Wrong");
     }
   };
 
