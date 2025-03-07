@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import { useEffect} from "react";
 import RequestCard from "./Users/RequestCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ const Request = () => {
       const res = await axios.get(BASE_URL + "/user/request/recieved", {
         withCredentials: true,
       });
-      console.log(res);
+
       if (res.statusText === "OK" && res.data) {
         dispatch(addListOfRequest(res.data.message));
       }

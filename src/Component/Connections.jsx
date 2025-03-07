@@ -1,6 +1,6 @@
 import UserConn from "./Users/UserConn";
 import axios from "axios";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import { useEffect, useState } from "react";
 const Connections = () => {
   const [data, setData] = useState([]);
@@ -9,9 +9,7 @@ const Connections = () => {
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-      console.log(data);
       if (res.statusText == "OK" && res.data) {
-        console.log(res);
         setData(res.data.message);
       }
     } catch (error) {
@@ -21,10 +19,9 @@ const Connections = () => {
   useEffect(() => {
     Connections();
   }, []);
-  console.log(Array.isArray(data));
 
   return (
-    <div className="flex items-center flex-col">
+    <div className="flex items-center flex-col my-16 gap-4">
       {Array.isArray(data) ? (
         data.length != 0 &&
         data.map((c) => {

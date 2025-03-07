@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import axios from "axios";
 import { removeUser } from "../utils/Slices/UserSlice";
 
@@ -15,7 +15,7 @@ const Navbar = () => {
         {},
         { withCredentials: true }
       );
-      console.log("res", res);
+
       dispatch(removeUser());
     } catch (error) {
       console.error(error);

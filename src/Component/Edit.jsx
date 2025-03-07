@@ -1,7 +1,7 @@
 import Text from "./Input/Text";
 import Number from "./Input/Number";
 import Gender from "./Input/Gender";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import axios from "axios";
 import { useState } from "react";
 import ArrayInput from "./Input/ArrayInput";
@@ -40,7 +40,7 @@ const Edit = () => {
       const res = await axios.patch(BASE_URL + "/profile/edit", data, {
         withCredentials: true,
       });
-      console.log(res);
+
       if (res.statusText === "OK" && res.data) {
         dispatch(addUser(res.data.update));
         navigate("/feed");

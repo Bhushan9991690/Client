@@ -1,6 +1,6 @@
 import Text from "./Input/Text";
 import axios from "axios";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/Slices/UserSlice";
@@ -25,7 +25,6 @@ const Login = () => {
       const res = await axios.post(BASE_URL + "/auth/login", data, {
         withCredentials: true,
       });
-      console.log(res)
       if (res.statusText === "OK" && res.data) {
         dispatch(addUser(res.data.userData));
         navigate("/feed");

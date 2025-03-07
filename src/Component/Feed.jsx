@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import { useEffect } from "react";
 import { addFeed } from "../utils/Slices/FeedSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,6 @@ const Feed = () => {
       });
       if (res.statusText === "OK" && res.data) {
         dispatch(addFeed(res.data.message));
-        console.log(res);
       }
     } catch (error) {
       console.error(error);

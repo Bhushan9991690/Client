@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BASE_URL } from "../utils/socket";
+import { BASE_URL } from "../utils/Url";
 import { useEffect } from "react";
 import { addUser } from "../utils/Slices/UserSlice";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,7 @@ const Body = () => {
       });
       if (res.statusText === "OK" && res.data) {
         const data = res.data;
+        
         dispatch(addUser(data));
       }
     } catch (error) {

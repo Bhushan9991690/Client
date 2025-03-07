@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { removeUserRequest } from "../../utils/Slices/Request";
-import { BASE_URL } from "../../utils/socket";
+import { BASE_URL } from "../../utils/Url";
 const RequestCard = (prop) => {
   const user = prop.user;
   const data = prop.user.fromUserId;

@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../utils/socket";
+import { BASE_URL } from "../../utils/Url";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { removeUserFromFeed } from "../../utils/Slices/FeedSlice";
