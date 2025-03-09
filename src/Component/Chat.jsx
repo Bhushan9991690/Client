@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import createSocketConnection from "../utils/socket";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../utils/Url";
+import axios from "axios";
 const Chat = () => {
   const [message, setMessage] = useState("");
   const [display, setDisplay] = useState([]);
@@ -12,10 +14,28 @@ const Chat = () => {
   const firstName = user?.firstName;
   const { targetUserId } = useParams();
   const socket = createSocketConnection();
+  const fetchData = async () => {
+    const res = await axios.get(BASE_URL + "/chat/" + targetUserId, {
+      withCredentials: true,
+    });
+    const data = res?.data?.messages;
+    const setData = data.map((msg) => {
+      return { firstName: msg?.senderId?.firstName, message: msg?.message };
+    });
+    setDisplay(setData);
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line
+  }, []);
+  console.log(display);
+
   useEffect(() => {
     if (!userId || !targetUserId) return;
     socket.emit("joinChat", { userId, targetUserId, firstName });
     socket.on("messageRecieved", ({ firstName, message }) => {
+      console.log(firstName, message);
+
       setDisplay((display) => {
         return [...display, { firstName, message }];
       });
@@ -30,7 +50,6 @@ const Chat = () => {
     // eslint-disable-next-line
   }, [userId, targetUserId]);
 
-
   const sendMessage = () => {
     try {
       socket.emit("sendMessage", { userId, targetUserId, firstName, message });
@@ -43,7 +62,7 @@ const Chat = () => {
     <div className="flex justify-center items-center my-10">
       <div className="card card-dash bg-base-300 md:w-196 w-full md:mx-20">
         <div className="card-body">
-          <div className="card-title font-bold text-2xl">Chat Dashboard</div>
+          <div className="card-title font-bold text-2xl">Chat</div>
           <hr className="mb-4 " />
           <div className="h-80 mx-4 overflow-auto">
             {display.length !== 0 &&
