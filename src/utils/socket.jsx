@@ -2,7 +2,11 @@ import { io } from "socket.io-client";
 import { BASE_URL } from "../utils/Url";
 
 const createSocketConnection = () => {
-  return io(BASE_URL);
+  const url =
+    location.hostname === "localhost"
+      ? io(BASE_URL)
+      : io("/", { path: "/api/socket" });
+  return url;
 };
 
 export default createSocketConnection;
