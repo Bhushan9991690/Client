@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const Toggle = createSlice({
   name: "toggle",
-  initialState: { toggleState: true },
+  initialState: { toggleState: false },
   reducers: {
     toggleState: (state) => {
       state.toggleState = !state.toggleState;
