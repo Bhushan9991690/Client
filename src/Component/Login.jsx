@@ -12,12 +12,12 @@ const Login = () => {
   const state = useSelector((store) => {
     return store.toggle.toggleState;
   });
-  const [firstName, setfirstName] = useState("Bhushan");
-  const [lastName, setLastName] = useState("kumar");
-  const [phone, setPhone] = useState("7404075251");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
 
-  const [email, setEmail] = useState("Bhushan@gmail.com");
-  const [password, setPassword] = useState("Bhushan@t20");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const handleLogin = async () => {
     try {
