@@ -5,7 +5,9 @@ const createSocketConnection = () => {
   const url =
     location.hostname === "localhost"
       ? io(BASE_URL)
-      : io("/", { path: "/api/socket.io" }); //
+      : io("/", { path: "/api/socket.io/" }); //
+  console.log(url.io.uri, "UUUU");
+
   return url;
 };
 
